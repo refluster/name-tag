@@ -183,11 +183,13 @@
     height: 11in;
     background: white;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(2, var(--nametag-width, 4.25in));
+    grid-template-rows: repeat(4, var(--nametag-height, 1.375in));
     padding: 0;
     margin: 0;
     gap: 0;
+    align-content: start;
+    justify-content: start;
     transform: scale(0.6);
     transform-origin: top left;
     margin-bottom: -4.4in;
@@ -196,6 +198,8 @@
 
 /* Individual Name Tag */
 .nametag {
+    width: var(--nametag-width, 4.25in);
+    height: var(--nametag-height, 1.375in);
     border: 1px dashed #ccc;
     display: flex;
     flex-direction: column;

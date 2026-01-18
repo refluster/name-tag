@@ -3,8 +3,8 @@ import { NameTagPageProps } from '../types';
 import { NameTag } from './NameTag';
 
 // Size constants for name tag dimensions (adjustable)
-export const NAMETAG_WIDTH = '3.25in'; // Half of 8.5in page width
-export const NAMETAG_HEIGHT = '1.375in'; // 11in / 8 tags = 1.375in
+export const NAMETAG_WIDTH = '3.75in'; // Half of 8.5in page width
+export const NAMETAG_HEIGHT = '2.375in'; // 11in / 8 tags = 1.375in
 
 /**
  * NameTagPage component
@@ -20,7 +20,13 @@ export const NameTagPage: React.FC<NameTagPageProps> = ({
             <div className="page-label no-print">
                 Page {pageNumber} of {totalPages}
             </div>
-            <div className="nametag-page">
+            <div
+                className="nametag-page"
+                style={{
+                    '--nametag-width': NAMETAG_WIDTH,
+                    '--nametag-height': NAMETAG_HEIGHT,
+                } as React.CSSProperties}
+            >
                 {Array.from({ length: 8 }).map((_, index) => (
                     <NameTag key={index} data={data[index]} />
                 ))}
