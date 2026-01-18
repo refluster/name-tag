@@ -3,8 +3,8 @@ import { NameTagPageProps } from '../types';
 import { NameTag } from './NameTag';
 
 // Size constants for name tag dimensions (adjustable)
-export const NAMETAG_WIDTH = '3.75in'; // Half of 8.5in page width
-export const NAMETAG_HEIGHT = '2.375in'; // 11in / 8 tags = 1.375in
+export const NAMETAG_WIDTH = '3.45in'; // Letter: 8.5in page width
+export const NAMETAG_HEIGHT = '2.375in'; // Letter: 11in / 4 tags = 2.75in
 
 /**
  * NameTagPage component
