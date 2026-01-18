@@ -13,7 +13,7 @@ export const NameTag: React.FC<NameTagProps> = ({ data }) => {
 
     return (
         <div className="nametag">
-            <div className="nametag-name">{data.name}</div>
+            <div className="nametag-name">{data.name}.</div>
             <div className="nametag-activity">{data.activity}</div>
             <div className="nametag-room">Room #{data.activityRoom}</div>
             <div className="nametag-homeroom">Homeroom: {data.homeroom}</div>
