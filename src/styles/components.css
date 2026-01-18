@@ -213,8 +213,8 @@
 
 .nametag-name {
     font-family: 'Libre Baskerville', Georgia, serif;
-    font-size: 24pt;
-    font-weight: 400;
+    font-size: 22pt;
+    font-weight: 700;
     color: #333;
     margin-bottom: 0.1in;
     line-height: 1.1;
@@ -223,7 +223,7 @@
 .nametag-activity {
     font-family: 'Source Sans Pro', Arial, sans-serif;
     font-size: 19pt;
-    font-weight: 400;
+    font-weight: 600;
     color: #555;
     margin-bottom: 0.1in;
 }
@@ -231,7 +231,7 @@
 .nametag-room {
     font-family: 'Source Sans Pro', Arial, sans-serif;
     font-size: 16pt;
-    font-weight: 400;
+    font-weight: 600;
     color: #555;
     margin-bottom: 0.15in;
 }
