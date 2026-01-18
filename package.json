@@ -24,8 +24,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist node_modules/.vite",
-    "validate": "npm run type-check && npm run lint",
-    "deploy": "npm run build && gh-pages -d dist"
+    "validate": "yarn type-check && yarn lint",
+    "deploy": "yarn build && gh-pages -d dist"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -46,6 +46,6 @@
   },
   "engines": {
     "node": ">=18.0.0",
-    "npm": ">=9.0.0"
+    "yarn": ">=1.22.0"
   }
 }
