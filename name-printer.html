@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Name Tag Printer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #f8f6f3;
+      --bg-secondary: #ffffff;
+      --text-primary: #2c2c2c;
+      --text-secondary: #5a5a5a;
+      --accent: #4a7c59;
+      --border: #e0dcd5;
+    }
+
+    body {
+      font-family: 'Source Sans Pro', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    /* Screen styles */
+    @media screen {
+      .app-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .header h1 {
+        font-family: 'Libre Baskerville', serif;
+        font-size: 2.5rem;
+        font-weight: 400;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+      }
+
+      .header p {
+        color: var(--text-secondary);
+        font-size: 1rem;
+      }
+
+      .input-section {
+        background: var(--bg-secondary);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      }
+
+      .input-section label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: var(--text-primary);
+      }
+
+      .input-section textarea {
+        width: 100%;
+        height: 200px;
+        padding: 1rem;
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        font-family: 'Monaco', 'Consolas', monospace;
+        font-size: 0.875rem;
+        resize: vertical;
+        transition: border-color 0.2s;
+      }
+
+      .input-section textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+      }
+
+      .input-section textarea::placeholder {
+        color: #aaa;
+      }
+
+      .help-text {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #f0f4f1;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+      }
+
+      .help-text code {
+        background: #e0e8e2;
+        padding: 0.125rem 0.375rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+      }
+
+      .actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .btn {
+        padding: 0.875rem 2rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #3d6849;
+        transform: translateY(-1px);
+      }
+
+      .btn-secondary {
+        background: var(--border);
+        color: var(--text-primary);
+      }
+
+      .btn-secondary:hover {
+        background: #d0ccc5;
+      }
+
+      .preview-section {
+        margin-top: 2rem;
+      }
+
+      .preview-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .preview-header h2 {
+        font-family: 'Libre Baskerville', serif;
+        font-weight: 400;
+        font-size: 1.5rem;
+      }
+
+      .page-info {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+      }
+
+      .print-preview {
+        background: #666;
+        padding: 2rem;
+        border-radius: 12px;
+      }
+
+      .page-wrapper {
+        margin-bottom: 2rem;
+      }
+
+      .page-wrapper:last-child {
+        margin-bottom: 0;
+      }
+
+      .page-label {
+        color: #ccc;
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    /* Name tag page styles */
+    .nametag-page {
+      width: 8.5in;
+      height: 11in;
+      background: white;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      padding: 0;
+      margin: 0;
+      gap: 0;
+    }
+
+    @media screen {
+      .nametag-page {
+        transform: scale(0.6);
+        transform-origin: top left;
+        margin-bottom: -4.4in;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      }
+    }
+
+    .nametag {
+      border: 1px dashed #ccc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+      background: white;
+    }
+
+    .nametag-name {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 24pt;
+      font-weight: 400;
+      color: #333;
+      margin-bottom: 0.1in;
+      line-height: 1.1;
+    }
+
+    .nametag-activity {
+      font-family: 'Source Sans Pro', Arial, sans-serif;
+      font-size: 19pt;
+      font-weight: 400;
+      color: #555;
+      margin-bottom: 0.1in;
+    }
+
+    .nametag-room {
+      font-family: 'Source Sans Pro', Arial, sans-serif;
+      font-size: 16pt;
+      font-weight: 400;
+      color: #555;
+      margin-bottom: 0.15in;
+    }
+
+    .nametag-homeroom {
+      font-family: 'Source Sans Pro', Arial, sans-serif;
+      font-size: 13pt;
+      font-weight: 400;
+      color: #666;
+      margin-bottom: 0.05in;
+    }
+
+    .nametag-grade-room {
+      font-family: 'Source Sans Pro', Arial, sans-serif;
+      font-size: 13pt;
+      font-weight: 400;
+      color: #666;
+    }
+
+    .empty-nametag {
+      border: 1px dashed #eee;
+    }
+
+    /* Print styles */
+    @media print {
+      @page {
+        size: letter;
+        margin: 0;
+      }
+
+      body {
+        background: white;
+      }
+
+      .app-container,
+      .input-section,
+      .preview-header,
+      .page-label,
+      .no-print {
+        display: none !important;
+      }
+
+      .print-preview {
+        background: white;
+        padding: 0;
+      }
+
+      .page-wrapper {
+        margin: 0;
+        page-break-after: always;
+      }
+
+      .page-wrapper:last-child {
+        page-break-after: avoid;
+      }
+
+      .nametag-page {
+        transform: none;
+        margin: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useMemo } = React;
+
+    function App() {
+      const [tsvInput, setTsvInput] = useState('');
+
+      const sampleTSV = `A\tB\tC\tD\tE\tF\tG\tH\tI
+1\t\tZachary\tM.\t5\t21\tMs. Starks\tSewing\t6
+2\t\tEmma\tS.\t4\t15\tMr. Johnson\tDrawing & Painting\t3
+3\t\tLiam\tW.\t3\t12\tMs. Chen\tCeramics\t8
+4\t\tOlivia\tR.\t5\t21\tMs. Starks\tPhotography\t5
+5\t\tNoah\tT.\t4\t18\tMrs. Davis\tWoodworking\t7
+6\t\tAva\tK.\t3\t10\tMr. Wilson\tDrawing & Painting\t3
+7\t\tSophia\tL.\t5\t22\tMs. Brown\tSewing\t6`;
+
+      const parsedData = useMemo(() => {
+        if (!tsvInput.trim()) return [];
+        
+        const lines = tsvInput.trim().split('\n');
+        if (lines.length < 2) return [];
+        
+        // Skip header row
+        const dataLines = lines.slice(1);
+        
+        return dataLines.map(line => {
+          const cols = line.split('\t');
+          // C column (index 2) + D column (index 3) = Name
+          const firstName = cols[2] || '';
+          const lastName = cols[3] || '';
+          const name = `${firstName} ${lastName}`.trim();
+          
+          // E column (index 4) = Grade
+          const grade = cols[4] || '';
+          
+          // F column (index 5) = Class Room
+          const classRoom = cols[5] || '';
+          
+          // G column (index 6) = Homeroom teacher
+          const homeroom = cols[6] || '';
+          
+          // H column (index 7) = Activity
+          const activity = cols[7] || '';
+          
+          // I column (index 8) = Activity Room
+          const activityRoom = cols[8] || '';
+          
+          return {
+            name,
+            grade,
+            classRoom,
+            homeroom,
+            activity,
+            activityRoom
+          };
+        }).filter(item => item.name);
+      }, [tsvInput]);
+
+      const pages = useMemo(() => {
+        const result = [];
+        for (let i = 0; i < parsedData.length; i += 6) {
+          result.push(parsedData.slice(i, i + 6));
+        }
+        return result;
+      }, [parsedData]);
+
+      const handlePrint = () => {
+        window.print();
+      };
+
+      const loadSample = () => {
+        setTsvInput(sampleTSV);
+      };
+
+      return (
+        <>
+          <div className="app-container no-print">
+            <header className="header">
+              <h1>Name Tag Printer</h1>
+              <p>Paste TSV data to generate printable name tags</p>
+            </header>
+
+            <section className="input-section">
+              <label htmlFor="tsv-input">TSV Data</label>
+              <textarea
+                id="tsv-input"
+                value={tsvInput}
+                onChange={(e) => setTsvInput(e.target.value)}
+                placeholder="Paste your TSV data here...&#10;&#10;Format: A  B  C(FirstName)  D(LastName)  E(Grade)  F(Room)  G(Homeroom)  H(Activity)  I(ActivityRoom)"
+              />
+              <div className="help-text">
+                <strong>Column mapping:</strong><br />
+                <code>C</code> + <code>D</code> → Name &nbsp;|&nbsp;
+                <code>E</code> → Grade &nbsp;|&nbsp;
+                <code>F</code> → Class Room &nbsp;|&nbsp;
+                <code>G</code> → Homeroom &nbsp;|&nbsp;
+                <code>H</code> → Activity &nbsp;|&nbsp;
+                <code>I</code> → Activity Room
+              </div>
+              <div className="actions">
+                <button className="btn btn-primary" onClick={handlePrint} disabled={pages.length === 0}>
+                  Print Name Tags
+                </button>
+                <button className="btn btn-secondary" onClick={loadSample}>
+                  Load Sample Data
+                </button>
+              </div>
+            </section>
+
+            {pages.length > 0 && (
+              <section className="preview-section">
+                <div className="preview-header">
+                  <h2>Print Preview</h2>
+                  <span className="page-info">{parsedData.length} name tags • {pages.length} page{pages.length > 1 ? 's' : ''}</span>
+                </div>
+              </section>
+            )}
+          </div>
+
+          {pages.length > 0 && (
+            <div className="print-preview">
+              {pages.map((pageData, pageIndex) => (
+                <div key={pageIndex} className="page-wrapper">
+                  <div className="page-label no-print">Page {pageIndex + 1} of {pages.length}</div>
+                  <div className="nametag-page">
+                    {Array.from({ length: 6 }).map((_, idx) => {
+                      const person = pageData[idx];
+                      if (!person) {
+                        return <div key={idx} className="nametag empty-nametag" />;
+                      }
+                      return (
+                        <div key={idx} className="nametag">
+                          <div className="nametag-name">{person.name}</div>
+                          <div className="nametag-activity">{person.activity}</div>
+                          <div className="nametag-room">Room #{person.activityRoom}</div>
+                          <div className="nametag-homeroom">Homeroom: {person.homeroom}</div>
+                          <div className="nametag-grade-room">Grade: {person.grade}  Room #{person.classRoom}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>
