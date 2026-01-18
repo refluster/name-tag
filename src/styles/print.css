@@ -1,0 +1,46 @@
+/* Print-specific styles */
+@media print {
+
+    /* Page configuration */
+    @page {
+        size: letter;
+        margin: 0;
+    }
+
+    /* Hide screen-only elements */
+    .app-container,
+    .input-section,
+    .preview-header,
+    .page-label,
+    .no-print {
+        display: none !important;
+    }
+
+    /* Reset body styles for print */
+    body {
+        background: white;
+    }
+
+    /* Print preview container */
+    .print-preview {
+        background: white;
+        padding: 0;
+    }
+
+    /* Page breaks */
+    .page-wrapper {
+        margin: 0;
+        page-break-after: always;
+    }
+
+    .page-wrapper:last-child {
+        page-break-after: avoid;
+    }
+
+    /* Name tag page adjustments for print */
+    .nametag-page {
+        transform: none;
+        margin: 0;
+        box-shadow: none;
+    }
+}
